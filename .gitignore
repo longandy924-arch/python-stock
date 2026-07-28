@@ -31,3 +31,6 @@ output/tencent_stability.csv
 
 # 实时行情快照
 output/realtime/
+
+# 流水线结果
+output/results/
