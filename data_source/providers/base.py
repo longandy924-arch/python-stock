@@ -36,8 +36,9 @@ class RealtimeDataProvider(ABC):
     provider_name: str = "unknown"
 
     @abstractmethod
-    def get_realtime_quotes(
-        self,
-        ts_codes: list[str] | None = None,
-    ) -> pd.DataFrame:
+    def is_available(self) -> bool:
+        """判断实时数据源当前是否可尝试。"""
+
+    @abstractmethod
+    def get_quotes(self) -> pd.DataFrame:
         """获取实时行情。"""
