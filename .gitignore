@@ -26,3 +26,5 @@ output/*
 
 # 数据缓存
 data/cache/
+
+output/tencent_stability.csv
