@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 虚拟环境
+.venv/
+venv/
+
+# 本地密钥与配置
+.env
+.env.*
+*.token
+secrets/
+config/local_settings.py
+
+# macOS
+.DS_Store
+
+# 运行输出
+logs/*
+output/*
+!logs/.gitkeep
+!output/.gitkeep
