@@ -1,25 +1,23 @@
 import os
-import smtplib
 import sys
+import smtplib
 from pathlib import Path
 from email.mime.text import MIMEText
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 ENV_FILE = BASE_DIR / "config" / "private" / "qq_mail.env"
 
-def load_env_file(path: Path) -> None:
-    if not path.exists():
-        raise SystemExit(f"未找到邮件配置文件: {path}")
 
-    for line in path.read_text().splitlines():
+def load_env():
+    for line in ENV_FILE.read_text().splitlines():
         line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, value = line.split("=", 1)
-        os.environ[key.strip()] = value.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ[k.strip()] = v.strip()
 
-def main() -> None:
-    load_env_file(ENV_FILE)
+
+def main():
+    load_env()
 
     sender = os.environ["QQ_MAIL_USER"]
     password = os.environ["QQ_MAIL_AUTH_CODE"]
@@ -29,7 +27,7 @@ def main() -> None:
     body = sys.stdin.read().strip()
 
     if not body:
-        body = "V52有候选，但邮件正文为空，请检查脚本日志。"
+        body = "V52今日运行完成，无详细候选信息。"
 
     msg = MIMEText(body, "plain", "utf-8")
     msg["From"] = sender
@@ -41,6 +39,7 @@ def main() -> None:
         server.sendmail(sender, [receiver], msg.as_string())
 
     print("QQ邮件通知已发送")
+
 
 if __name__ == "__main__":
     main()
