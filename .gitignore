@@ -23,3 +23,6 @@ logs/*
 output/*
 !logs/.gitkeep
 !output/.gitkeep
+
+# 数据缓存
+data/cache/
