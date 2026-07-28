@@ -14,6 +14,20 @@ LOG_FILE="$LOG_DIR/v52_1440_$NOW.log"
 echo "===== V52 14:40 自动运行开始：$(date) =====" | tee "$LOG_FILE"
 echo "使用Python: $PYTHON_BIN" | tee -a "$LOG_FILE"
 
+echo "===== A股交易日判断 =====" | tee -a "$LOG_FILE"
+set +e
+"$PYTHON_BIN" scripts/is_a_share_trade_day.py 2>&1 | tee -a "$LOG_FILE"
+TRADE_DAY_STATUS=${PIPESTATUS[0]}
+set -e
+
+if [ "$TRADE_DAY_STATUS" -ne 0 ]; then
+    MSG="V52今日不执行选股：非A股交易日，或交易日历检查失败。运行时间：$(date)"
+    echo "$MSG" | tee -a "$LOG_FILE"
+    echo "$MSG" | python3 scripts/send_qq_mail.py "V52今日不选股提醒"
+    echo "===== V52 14:40 自动运行结束：$(date) =====" | tee -a "$LOG_FILE"
+    exit 0
+fi
+
 "$PYTHON_BIN" pipeline/run_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE"
 
 if grep -q "今日唯一候选" "$LOG_FILE"; then
