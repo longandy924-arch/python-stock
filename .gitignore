@@ -28,3 +28,6 @@ output/*
 data/cache/
 
 output/tencent_stability.csv
+
+# 实时行情快照
+output/realtime/
