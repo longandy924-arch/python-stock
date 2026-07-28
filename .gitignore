@@ -36,3 +36,4 @@ output/realtime/
 output/results/
 data/daily/*.csv
 !data/daily/README.md
+config/private/
