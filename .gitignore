@@ -34,3 +34,5 @@ output/realtime/
 
 # 流水线结果
 output/results/
+data/daily/*.csv
+!data/daily/README.md

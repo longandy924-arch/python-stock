@@ -50,6 +50,7 @@ def main() -> None:
 
     # 3. 历史日线目录
     data_dirs = [
+        BASE_DIR / "data" / "daily",
         BASE_DIR / "data",
         BASE_DIR / "backtest" / "v9" / "data",
     ]
@@ -65,8 +66,16 @@ def main() -> None:
     if data_dir is None:
         raise SystemExit("未找到历史日线CSV目录，无法计算V52因子")
 
-    files = list(data_dir.glob("*.csv"))
+    files = [
+        f for f in data_dir.glob("*.csv")
+        if f.name != "stock_basic_mv.csv"
+    ]
     print("历史日线文件数量:", len(files))
+
+    if len(files) < 3000:
+        raise SystemExit(
+            f"历史日线文件数量过少: {len(files)}，疑似没有迁移全市场日线数据，不能进入V52实盘选股"
+        )
 
     # 4. 合并检查
     merged = realtime.merge(
