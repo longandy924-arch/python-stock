@@ -34,6 +34,10 @@ echo "===== V52.7 排名分析 ====="
 
 
 
+
+echo "===== V53交易评价 ====="
+$PYTHON scripts/update_v53_daily_eval.py || true
+
 echo "===== V53策略监控 ====="
 $PYTHON scripts/v53_daily_monitor.py || true
 
