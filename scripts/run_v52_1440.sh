@@ -1,11 +1,11 @@
 #!/bin/zsh
 set -e
 
-cd /Users/andylong/Desktop/python-stock
+cd /Users/andylong/python-stock
 
-PYTHON_BIN="/Users/andylong/Desktop/python-stock/.venv/bin/python3"
+PYTHON_BIN="/Users/andylong/python-stock/.venv/bin/python3"
 
-LOG_DIR="/Users/andylong/Desktop/python-stock/logs"
+LOG_DIR="/Users/andylong/python-stock/logs"
 mkdir -p "$LOG_DIR"
 
 NOW=$(date "+%Y%m%d_%H%M%S")
@@ -37,7 +37,7 @@ if grep -q "今日唯一候选" "$LOG_FILE"; then
 
     osascript -e "display notification \"$SHORT_PICK\" with title \"V52 今日唯一候选\"" || true
 
-    ./.venv/bin/python3 scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE"
+    (./.venv/bin/python3 scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE") || true
 
 ./.venv/bin/python3 scripts/build_v52_mail_content.py | ./.venv/bin/python3 scripts/send_qq_mail.py "V52每日选股"
 else
