@@ -8,6 +8,10 @@ echo "===== V52 20:00复盘开始 ====="
 
 $PYTHON scripts/update_v52_market_result.py || true
 
+echo "===== V52次日行情回填 ====="
+$PYTHON scripts/update_v52_nextday_result.py || true
+
+
 $PYTHON scripts/analyze_v52_factors.py || true
 
 $PYTHON scripts/analyze_v52_failures.py || true
