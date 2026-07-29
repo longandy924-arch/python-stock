@@ -14,6 +14,10 @@ $PYTHON scripts/analyze_v52_failures.py || true
 
 $PYTHON scripts/generate_v52_report.py || true
 
+echo "===== V52.9 实盘监控面板 ====="
+$PYTHON scripts/generate_v52_dashboard.py || true
+
+
 if [ -f reports/v52_daily_report.txt ]; then
     cat reports/v52_daily_report.txt | $PYTHON scripts/send_qq_mail.py "V52每日复盘报告"
 fi
