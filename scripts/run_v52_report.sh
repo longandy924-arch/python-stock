@@ -32,6 +32,11 @@ echo "===== V52.7 排名分析 ====="
 ./.venv/bin/python3 scripts/analyze_v52_rank.py || true
 
 
+
+
+echo "===== V53策略监控 ====="
+$PYTHON scripts/v53_daily_monitor.py || true
+
 echo "===== V52.8 权重分析 ====="
 ./.venv/bin/python3 scripts/analyze_v52_weights.py || true
 
