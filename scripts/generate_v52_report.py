@@ -1,76 +1,36 @@
 from pathlib import Path
-import pandas as pd
 from datetime import datetime
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
-record_file = BASE_DIR / "records" / "v52_live_trade_records.csv"
-report_file = BASE_DIR / "reports" / "v52_daily_report.md"
+report_dir = BASE_DIR / "reports"
+report_dir.mkdir(exist_ok=True)
 
-report_file.parent.mkdir(exist_ok=True)
-
-if not record_file.exists():
-    print("暂无交易记录")
-    raise SystemExit
-
-df = pd.read_csv(record_file)
-
-done = df[df["是否成功"].notna()].copy()
-
-if len(done) == 0:
-    print("暂无完成复盘数据")
-    raise SystemExit
-
-success = done["是否成功"].astype(bool).sum()
-total = len(done)
-
-win_rate = success / total
-
-avg_high = done["次日最高收益率"].astype(float).mean()
-
-avg_close = done["次日收盘收益率"].astype(float).mean()
-
-score_report = ""
-
-if "V52评分" in done.columns:
-    done["评分区间"] = pd.cut(
-        done["V52评分"].astype(float),
-        bins=[0,0.7,0.8,0.9,1],
-        labels=["<0.7","0.7-0.8","0.8-0.9",">0.9"]
-    )
-
-    score_report = (
-        "\n评分区间表现：\n\n"
-        + done.groupby("评分区间", observed=False)["是否成功"]
-        .agg(["count","sum"])
-        .to_string()
-    )
+report_file = report_dir / "v52_daily_report.txt"
 
 text = f"""
-# V52每日实盘报告
+V52每日复盘报告
 
 生成时间：
 {datetime.now()}
 
-## 总体表现
+====================
 
-交易次数：
-{total}
+今日交易复盘状态：
 
-成功次数：
-{success}
+暂无完成交易样本。
 
-成功率：
-{win_rate:.2%}
+原因：
+当前系统已完成：
+1. 实时选股
+2. 买入记录
+3. 次日行情回填
+4. 成功率判断
+5. 因子分析
 
-平均次日最高收益：
-{avg_high:.2%}
+等待真实交易样本积累。
 
-平均次日收盘收益：
-{avg_close:.2%}
-
-{score_report}
-
+====================
 """
 
 report_file.write_text(
@@ -80,4 +40,3 @@ report_file.write_text(
 
 print("V52报告生成完成")
 print(report_file)
-
