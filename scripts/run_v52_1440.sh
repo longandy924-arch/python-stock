@@ -37,12 +37,14 @@ if grep -q "今日唯一候选" "$LOG_FILE"; then
 
     osascript -e "display notification \"$SHORT_PICK\" with title \"V52 今日唯一候选\"" || true
 
-    echo "$PICK" | python3 scripts/send_qq_mail.py "V52今日唯一候选"
+    ./.venv/bin/python3 scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE"
+
+./.venv/bin/python3 scripts/build_v52_mail_content.py | ./.venv/bin/python3 scripts/send_qq_mail.py "V52每日选股"
 else
     EMPTY_MSG="V52今日无符合条件候选，建议空仓。运行时间：$(date)"
     echo "$EMPTY_MSG" | tee -a "$LOG_FILE"
 
-    echo "$EMPTY_MSG" | python3 scripts/send_qq_mail.py "V52今日空仓提醒"
+    echo "$EMPTY_MSG" | ./.venv/bin/python3 scripts/send_qq_mail.py "V52今日空仓提醒"
 fi
 
 echo "===== V52 14:40 自动运行结束：$(date) =====" | tee -a "$LOG_FILE"
