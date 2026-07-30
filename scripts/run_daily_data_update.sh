@@ -8,6 +8,8 @@ echo "===== 每日日线更新开始 ====="
 
 $PYTHON scripts/update_daily_csv.py
 
+$PYTHON scripts/update_stock_basic_mv.py
+
 $PYTHON scripts/check_daily_data_health.py
 
 
