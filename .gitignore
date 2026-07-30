@@ -38,3 +38,6 @@ data/daily/*.csv
 !data/daily/README.md
 config/private/
 records/
+research_backup/
+pipeline/logs/
+pipeline/data/
