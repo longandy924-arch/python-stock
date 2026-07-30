@@ -70,6 +70,7 @@ echo "$V55_OUTPUT" | tee -a "$LOG_FILE"
 if [ "$V55_STATUS" -eq 0 ]; then
     echo "===== V55通过，发送A级候选邮件 =====" | tee -a "$LOG_FILE"
     ("$PYTHON_BIN" scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE") || true
+    ("$PYTHON_BIN" scripts/record_v55_selected_pick.py A 2>&1 | tee -a "$LOG_FILE") || true
     "$PYTHON_BIN" scripts/build_v52_mail_content.py | "$PYTHON_BIN" scripts/send_qq_mail.py "V55今日A类可买候选"
     echo "===== V55/V56 14:40 自动运行结束：$(date) =====" | tee -a "$LOG_FILE"
     exit 0
@@ -84,6 +85,7 @@ echo "$V56_OUTPUT" | tee -a "$LOG_FILE"
 
 if [ "$V56_STATUS" -eq 0 ]; then
     echo "===== V56通过，发送B类次级候选邮件 =====" | tee -a "$LOG_FILE"
+    ("$PYTHON_BIN" scripts/record_v55_selected_pick.py B 2>&1 | tee -a "$LOG_FILE") || true
     "$PYTHON_BIN" scripts/build_v56_mail_content.py | "$PYTHON_BIN" scripts/send_qq_mail.py "V56今日B类次级候选"
     echo "===== V55/V56 14:40 自动运行结束：$(date) =====" | tee -a "$LOG_FILE"
     exit 0
