@@ -37,7 +37,17 @@ if grep -q "今日唯一候选" "$LOG_FILE"; then
 
     osascript -e "display notification \"$SHORT_PICK\" with title \"V52 今日唯一候选\"" || true
 
-    (./.venv/bin/python3 scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE") || true
+    
+echo "===== V52因子匹配强制校验 =====" | tee -a "$LOG_FILE"
+if ! ./.venv/bin/python3 scripts/validate_v52_factor_match.py 2>&1 | tee -a "$LOG_FILE"; then
+    EMPTY_MSG="V52今日无符合条件候选。\n\n原因：最终候选触发过热过滤器，已自动剔除。\n\n当前规则：不排除创业板；但排除4日/5日涨幅过高、换手率过高、高涨幅叠加高换手的候选。\n\n建议：今日空仓，不强行买入。\n\n运行时间：$(date)"
+    echo "$EMPTY_MSG" | ./.venv/bin/python3 scripts/send_qq_mail.py "V52今日空仓提醒"
+    echo "过热候选已剔除，今日不推荐。" | tee -a "$LOG_FILE"
+    echo "===== V52 14:40 自动运行结束：$(date) =====" | tee -a "$LOG_FILE"
+    exit 0
+fi
+
+(./.venv/bin/python3 scripts/record_v52_live_pick.py 2>&1 | tee -a "$LOG_FILE") || true
 
 ./.venv/bin/python3 scripts/build_v52_mail_content.py | ./.venv/bin/python3 scripts/send_qq_mail.py "V52每日选股"
 else
