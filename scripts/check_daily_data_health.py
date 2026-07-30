@@ -1,45 +1,60 @@
 from pathlib import Path
 import pandas as pd
-from datetime import datetime
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+DATA_DIR = BASE_DIR / "data" / "daily"
 
-DATA_DIR = BASE_DIR/"data"/"daily"
+files = list(DATA_DIR.glob("*.csv"))
 
-files=list(DATA_DIR.glob("*.csv"))
+bad = []
+latest = []
+small = []
 
-bad=[]
-latest=[]
+required = [
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount"
+]
 
 for f in files:
     try:
-        df=pd.read_csv(f)
+        df = pd.read_csv(f)
 
-        if "trade_date" not in df.columns:
+        date_col = None
+
+        if "trade_date" in df.columns:
+            date_col = "trade_date"
+        elif "date" in df.columns:
+            date_col = "date"
+
+        if date_col is None:
             bad.append(f.name)
             continue
 
-        latest.append(
-            str(df["trade_date"].max())
-        )
+        for c in required:
+            if c not in df.columns:
+                bad.append(f.name)
+                break
 
-    except:
+        if len(df) < 100:
+            small.append(f.name)
+
+        latest.append(str(df[date_col].max()))
+
+    except Exception:
         bad.append(f.name)
 
+print("股票文件数量:", len(files))
 
-print("股票文件数量:",len(files))
+print("最新交易日期:", max(latest) if latest else None)
 
-if latest:
-    print(
-        "最新交易日期:",
-        max(latest)
-    )
-
-print(
-    "异常文件:",
-    len(bad)
-)
-
+print("字段异常:", len(bad))
 if bad:
     print(bad[:10])
 
+print("数据过少:", len(small))
+if small:
+    print(small[:10])
