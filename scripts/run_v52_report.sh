@@ -1,8 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
+source config/env.sh
 
-cd /Users/andylong/python-stock
 
-PYTHON="./.venv/bin/python3"
+cd "$PROJECT_ROOT"
+
+PYTHON="$PYTHON_BIN"
 
 echo "===== V52 20:00复盘开始 ====="
 
@@ -29,7 +31,7 @@ fi
 echo "===== V52 20:00复盘结束 ====="
 
 echo "===== V52.7 排名分析 ====="
-./.venv/bin/python3 scripts/analyze_v52_rank.py || true
+$PYTHON_BIN scripts/analyze_v52_rank.py || true
 
 
 
@@ -46,5 +48,5 @@ echo "===== V53策略监控 ====="
 $PYTHON scripts/v53_daily_monitor.py || true
 
 echo "===== V52.8 权重分析 ====="
-./.venv/bin/python3 scripts/analyze_v52_weights.py || true
+$PYTHON_BIN scripts/analyze_v52_weights.py || true
 

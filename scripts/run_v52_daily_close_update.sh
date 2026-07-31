@@ -1,8 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
+source config/env.sh
 
-cd /Users/andylong/python-stock
 
-PYTHON="./.venv/bin/python3"
+cd "$PROJECT_ROOT"
+
+PYTHON="$PYTHON_BIN"
 
 echo "===== V52 次日结果自动更新 ====="
 

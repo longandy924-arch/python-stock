@@ -1,8 +1,15 @@
-#!/bin/zsh
+#!/bin/bash
+source config/env.sh
 
-cd /Users/andylong/python-stock
 
-PYTHON="./.venv/bin/python3"
+cd "$PROJECT_ROOT"
+
+if [ -f "/Users/andylong/python-stock/config/tushare.env" ]; then
+    source "/Users/andylong/python-stock/config/tushare.env"
+fi
+
+
+PYTHON="$PYTHON_BIN"
 
 echo "===== 每日日线更新开始 ====="
 

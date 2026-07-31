@@ -41,3 +41,28 @@ records/
 research_backup/
 pipeline/logs/
 pipeline/data/
+config/tushare.env
+reports/
+*backup*
+
+# market data
+data/*.csv
+data/**/*.csv
+
+# runtime
+logs/
+output/
+records/
+reports/
+
+# secrets
+config/tushare.env
+config/*.token
+
+# backup
+*backup*
+
+# rebuild temporary scripts
+*_before_rebuild.py
+*_backup.py
+*_backup.sh

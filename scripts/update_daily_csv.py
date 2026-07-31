@@ -31,7 +31,8 @@ def update_one(pro, ts_code):
 
     if file.exists():
         old = pd.read_csv(file)
-        last_date = str(old["trade_date"].max())
+        date_col = "trade_date" if "trade_date" in old.columns else "date"
+        last_date = str(old[date_col].max())
     else:
         old = pd.DataFrame()
         last_date = "20100101"
@@ -53,11 +54,11 @@ def update_one(pro, ts_code):
     )
 
     result = result.drop_duplicates(
-        subset=["trade_date"],
+        subset=[date_col],
         keep="last"
     )
 
-    result = result.sort_values("trade_date")
+    result = result.sort_values(date_col)
 
     result.to_csv(
         file,

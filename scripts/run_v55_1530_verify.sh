@@ -1,9 +1,9 @@
 #!/bin/zsh
 set -e
 
-cd /Users/andylong/python-stock
+cd "$PROJECT_ROOT"
 
-PYTHON_BIN="/Users/andylong/python-stock/.venv/bin/python3"
+source config/env.sh
 LOG_DIR="/Users/andylong/python-stock/logs"
 mkdir -p "$LOG_DIR"
 
