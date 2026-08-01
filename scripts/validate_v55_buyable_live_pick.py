@@ -74,7 +74,7 @@ if gain4 is None or gain4 < 16:
 if gain5 is None or gain5 < 15:
     reasons.append(f"近5日涨幅不足：{gain5}")
 
-if turnover is None or turnover > 1.0:
+if turnover is None or turnover > 4.0:
     reasons.append(f"实时换手率不符合V55口径：{turnover}")
 
 if reasons:

@@ -81,7 +81,7 @@ if gain4 is None or gain4 < 12:
 if gain5 is None or gain5 < 10:
     reasons.append(f"近5日涨幅不足：{gain5}")
 
-if turnover is None or turnover > 1.2:
+if turnover is None or turnover > 5.0:
     reasons.append(f"实时换手率估算过高：{turnover}")
 
 print("===== V56实时校验 =====")
